@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities; 
+
+/* Scoped fixes for Students page filter dropdown to avoid bullets and overlap */
+.students-filter [role="listbox"],
+.students-filter ul[role="listbox"],
+.students-filter ul {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 0 !important;
+}
+.students-filter [role="option"],
+.students-filter li {
+  list-style: none !important;
+}
+.students-filter li::marker {
+  content: none !important;
+}
+.students-filter [role="listbox"] {
+  z-index: 9999 !important;
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important; /* gray-200 */
+  border-radius: 0.5rem !important; /* rounded-md */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.10) !important;
+}
