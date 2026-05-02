@@ -278,61 +278,119 @@ export function Quiz() {
           </button>
         }
       >
-        <div className="p-4">
+        <div className="p-2 sm:p-4">
           {/* Section filter dropdown */}
           {selectedQuiz && (
-            <div className="mb-4">
-              <label htmlFor="section-select" className="block mb-1 font-medium">Filter by Section:</label>
-              <select
-                id="section-select"
-                className="border rounded px-2 py-1"
-                value={selectedSection}
-                onChange={e => handleSectionChange(e, quizList.find(q => q.quizName === selectedQuiz)?.moduleID)}
-              >
-                {sections.map(section => (
-                  <option key={section.section} value={section.sectionName}>
-                    {section.sectionName}
-                  </option>
-                ))}
-              </select>
+            <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gray-50 p-4 rounded-xl border border-gray-100">
+              <div className="flex flex-col w-full sm:w-auto">
+                 <span className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Select Section</span>
+                 <select
+                   id="section-select"
+                   className="bg-white border border-gray-200 text-gray-800 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full sm:w-64 p-2.5 shadow-sm outline-none transition-shadow"
+                   value={selectedSection}
+                   onChange={e => handleSectionChange(e, quizList.find(q => q.quizName === selectedQuiz)?.moduleID)}
+                 >
+                   {sections.map(section => (
+                     <option key={section.section} value={section.sectionName}>
+                       {section.sectionName}
+                     </option>
+                   ))}
+                 </select>
+              </div>
             </div>
           )}
-          {/* Scores table */}
+          {/* Scores list */}
           {selectedQuiz ? (
             loadingResults ? (
-              <div className="text-center py-8">
-                <span className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></span>
-                <p className="mt-2 text-gray-600">Loading results...</p>
+              <div className="flex flex-col items-center justify-center py-16 bg-gray-50 rounded-xl border border-gray-100">
+                <span className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent mb-4"></span>
+                <p className="text-gray-600 font-medium">Fetching scores...</p>
               </div>
             ) : (
-              <table className="w-full table-auto border mt-2">
-                <thead>
-                  <tr>
-                    <th className="border px-2 py-1 text-left">Student Name</th>
-                    <th className="border px-2 py-1 text-left">Updated At</th>
-                    <th className="border px-2 py-1 text-left">Score</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {quizResults.length > 0 ? (
-                    quizResults.map(r => (
-                      <tr key={r.username}>
-                        <td className="border px-2 py-1">{formatStudentName(r)}</td>
-                        <td className="border px-2 py-1">{formatUpdated(r)}</td>
-                        <td className="border px-2 py-1">
-                          {r.status === "completed" ? r.score : "Not Started"}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3} className="text-center py-2">
-                        No scores found for this selection.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+              <div className="flex flex-col gap-3 max-h-[60vh] overflow-y-auto pr-1 sm:pr-2" style={{ scrollbarWidth: 'thin' }}>
+                {quizResults.length > 0 ? (
+                  quizResults.map((r, idx) => {
+                    const fullName = formatStudentName(r);
+                    const initial = fullName.charAt(0).toUpperCase();
+                    const isCompleted = r.status === "completed";
+                    
+                    // Score calculation
+                    let maxScore = 10;
+                    if (r.totalPoints) maxScore = r.totalPoints;
+                    const rawScore = typeof r.score === 'number' ? r.score : (typeof r.points === 'number' ? r.points : 0);
+                    let pct = 0;
+                    if (typeof r.percentage === 'number') {
+                       pct = r.percentage;
+                    } else if (isCompleted) {
+                       pct = Math.min(100, (rawScore / maxScore) * 100);
+                    }
+                    
+                    return (
+                      <div key={r.username || idx} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-5 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow gap-4 sm:gap-0">
+                        
+                        {/* Avatar & Name */}
+                        <div className="flex items-center gap-4 w-full sm:w-[35%]">
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm shrink-0 ${idx % 2 === 0 ? 'bg-gradient-to-br from-arsci-cyan-dark to-blue-500' : 'bg-gradient-to-br from-arsci-pink to-arsci-purple'}`}>
+                            {initial}
+                          </div>
+                          <div className="flex flex-col min-w-0">
+                            <Typography variant="small" className="font-semibold text-gray-800 truncate">
+                              {fullName}
+                            </Typography>
+                            <Typography variant="small" className="text-xs text-gray-400 truncate">
+                              @{r.username}
+                            </Typography>
+                          </div>
+                        </div>
+
+                        {/* Status Badge */}
+                        <div className="w-full sm:w-[25%] flex flex-row sm:flex-col items-center sm:items-start justify-between sm:justify-center">
+                          <span className="sm:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</span>
+                          <div className="flex flex-col items-end sm:items-start">
+                            {isCompleted ? (
+                               <>
+                                 <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-green-700 bg-green-100 rounded-full mb-1 inline-block">
+                                   Completed
+                                 </span>
+                                 <span className="text-xs text-gray-500 font-medium">{formatUpdated(r)}</span>
+                               </>
+                            ) : (
+                               <>
+                                 <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-gray-500 bg-gray-100 rounded-full mb-1 inline-block">
+                                   Pending
+                                 </span>
+                                 <span className="text-xs text-gray-400 font-medium">—</span>
+                               </>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Progress Bar */}
+                        <div className="w-full sm:w-[35%] flex flex-col justify-center">
+                           <div className="flex justify-between items-end mb-1.5">
+                             <Typography variant="small" className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Score</Typography>
+                             <Typography variant="small" className={`font-bold text-sm ${isCompleted ? 'text-arsci-purple' : 'text-gray-400'}`}>
+                               {isCompleted ? `${rawScore} / ${maxScore}` : '0 / 10'}
+                             </Typography>
+                           </div>
+                           <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                             <div 
+                               className={`h-full rounded-full transition-all duration-1000 ${isCompleted ? 'bg-gradient-to-r from-arsci-pink to-arsci-purple' : 'bg-gray-200'}`}
+                               style={{ width: `${isCompleted ? pct : 0}%` }}
+                             />
+                           </div>
+                        </div>
+
+                      </div>
+                    );
+                  })
+                ) : (
+                   <div className="flex flex-col items-center justify-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                     <span className="text-4xl mb-3">📭</span>
+                     <Typography className="text-gray-500 font-medium">No students found in this section.</Typography>
+                   </div>
+                )}
+              </div>
             )
           ) : (
             <Typography>No quiz selected.</Typography>
