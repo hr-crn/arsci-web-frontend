@@ -695,8 +695,8 @@ export function Students() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left: Enhanced staged list */}
-            <div className="space-y-4">
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="space-y-4 h-full">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden h-full flex flex-col">
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-4 border-b border-purple-100">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -745,25 +745,10 @@ export function Students() {
                     noneLabel="Select section"
                     required
                   />
-                  {!batchSection && (
-                    <div className="mt-3 flex items-start gap-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                      <svg className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                      </svg>
-                      <div className="flex-1">
-                        <Typography variant="small" className="text-amber-800 font-medium">
-                          Section Required
-                        </Typography>
-                        <Typography variant="small" className="text-amber-700 mt-1">
-                          Please select a section before adding students to the list.
-                        </Typography>
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 {/* Students list */}
-                <div className="p-4 space-y-3 max-h-96 overflow-auto">
+                <div className="p-4 space-y-3 overflow-auto flex-1 min-h-[300px]">
                   {stagedStudents.length === 0 && (
                     <div className="text-center py-12">
                       <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -878,9 +863,10 @@ export function Students() {
               </div>
             </div>
 
-            {/* Right: Enhanced add form */}
-            <div className="space-y-6">
-              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border border-purple-100 shadow-sm">
+            {/* Right: Enhanced add form (only visible if section is selected) */}
+            {batchSection && (
+              <div className="space-y-6 h-full">
+                <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border border-purple-100 shadow-sm h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="p-2 bg-arsci-cyan/20 rounded-lg">
                     <svg className="w-5 h-5 text-arsci-cyan-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -897,7 +883,7 @@ export function Students() {
                   </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-4 flex-1">
                   <div className="-mb-2 flex items-center gap-3">
                     <input
                       id="auto-gen-toggle-batch"
@@ -1091,6 +1077,7 @@ export function Students() {
                 </div>
               </div>
             </div>
+            )}
           </div>
         )}
       </FloatingPanel>
