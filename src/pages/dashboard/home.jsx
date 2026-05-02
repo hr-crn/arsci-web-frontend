@@ -149,10 +149,17 @@ export function Home() {
         // Process Activity Feed
         allActivities.sort((a, b) => b.timeDate - a.timeDate);
         const topActivities = allActivities.slice(0, 5).map(act => {
-           const diffMs = new Date() - act.timeDate;
+           // Fix for UTC to PHT (+8 hours) timezone mismatch
+           let adjustedTime = new Date(act.timeDate.getTime() + (8 * 60 * 60 * 1000));
+           let diffMs = new Date() - adjustedTime;
+           
+           // If the adjustment accidentally puts the time in the future, fallback to original math
+           if (diffMs < 0) diffMs = new Date() - act.timeDate;
+
            const diffMins = Math.floor(diffMs / 60000);
            const diffHours = Math.floor(diffMins / 60);
            const diffDays = Math.floor(diffHours / 24);
+           
            let timeStr = "just now";
            if (diffDays > 0) timeStr = `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
            else if (diffHours > 0) timeStr = `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
