@@ -47,6 +47,21 @@ export function Home() {
         MODULE_IDS.forEach(mid => modScores[mid] = { sum: 0, count: 0 });
         const allActivities = [];
 
+        // Build section and student maps for full names
+        const sectionMap = {};
+        if (Array.isArray(sections)) {
+           sections.forEach(sec => {
+              sectionMap[sec.section] = sec.sectionName || sec.name || sec.section;
+           });
+        }
+
+        const studentMap = {};
+        if (Array.isArray(students)) {
+           students.forEach(s => {
+              studentMap[s.username] = s;
+           });
+        }
+
         // Collect student additions for activity feed
         if (Array.isArray(students)) {
           students.forEach(s => {
@@ -54,9 +69,13 @@ export function Home() {
             if (rawDt) {
               const dt = new Date(rawDt);
               if (!isNaN(dt)) {
+                const secName = sectionMap[s.section] ? ` - ${sectionMap[s.section]}` : "";
+                const fullName = [s.firstName, s.middleName, s.lastName].filter(Boolean).join(" ");
+                const displayUser = fullName ? `${fullName}${secName}` : s.username;
+
                 allActivities.push({
                   id: `student-${s.username}`,
-                  user: `${s.firstName || ''} ${s.lastName || ''}`.trim() || s.username,
+                  user: displayUser,
                   action: "was added to the system",
                   timeDate: dt,
                   color: "bg-arsci-pink"
@@ -121,9 +140,21 @@ export function Home() {
                   } else {
                      scoreText = ` completed`;
                   }
+
+                  const studentObj = studentMap[r.username];
+                  const currentSectionName = sec.sectionName || sec.name || sec.section;
+                  let displayUser = r.username;
+                  
+                  if (studentObj) {
+                     const fullName = [studentObj.firstName, studentObj.middleName, studentObj.lastName].filter(Boolean).join(" ");
+                     displayUser = fullName ? `${fullName} - ${currentSectionName}` : `${r.username} - ${currentSectionName}`;
+                  } else {
+                     displayUser = `${r.username} - ${currentSectionName}`;
+                  }
+
                   allActivities.push({
                     id: `quiz-${r.username}-${mid}-${dt.getTime()}`,
-                    user: r.username,
+                    user: displayUser,
                     action: `${scoreText} ${MODULE_META[mid] || mid}`,
                     timeDate: dt,
                     color: "bg-arsci-cyan-dark"
