@@ -700,35 +700,12 @@ export function Students() {
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-4 border-b border-purple-100">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-arsci-purple/20 rounded-lg">
-                        <svg className="w-5 h-5 text-arsci-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                      </div>
                       <div>
                         <Typography variant="h6" className="text-gray-800 font-semibold">
                           Students to Add ({stagedStudents.length})
                         </Typography>
-                        <Typography variant="small" className="text-gray-600">
-                          Click names to edit • Persistent across sessions
-                        </Typography>
                       </div>
                     </div>
-                    {stagedStudents.length > 0 && (
-                      <Button 
-                        size="sm" 
-                        variant="outlined" 
-                        color="red" 
-                        onClick={handleClearAllStaged}
-                        disabled={loading}
-                        className="hover:bg-red-50 transition-colors duration-200"
-                      >
-                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                        Clear All
-                      </Button>
-                    )}
                   </div>
                 </div>
 
@@ -748,7 +725,7 @@ export function Students() {
                 </div>
 
                 {/* Students list */}
-                <div className="p-4 space-y-3 overflow-auto flex-1 min-h-[300px]">
+                <div className="p-4 space-y-3 overflow-auto flex-1 h-[400px]">
                   {stagedStudents.length === 0 && (
                     <div className="text-center py-12">
                       <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -847,16 +824,24 @@ export function Students() {
                 </div>
 
                 {/* Submit button */}
-                <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100">
+                <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex gap-4">
+                  {stagedStudents.length > 0 && (
+                    <Button 
+                      variant="outlined" 
+                      color="red" 
+                      onClick={handleClearAllStaged}
+                      disabled={loading}
+                      className="hover:bg-red-50 transition-colors duration-200 min-w-[100px]"
+                    >
+                      Clear All
+                    </Button>
+                  )}
                   <Button 
-                    className="w-full arsci-btn-gradient rounded-xl shadow-md hover:shadow-lg" 
+                    className="flex-1 arsci-btn-gradient rounded-xl shadow-md hover:shadow-lg" 
                     onClick={handlePanelSubmit} 
                     disabled={loading || stagedStudents.length === 0 || !batchSection}
                     size="lg"
                   >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                    </svg>
                     {loading ? "Saving..." : `Add All ${stagedStudents.length} Students`}
                   </Button>
                 </div>
@@ -868,17 +853,9 @@ export function Students() {
               <div className="space-y-6 h-full">
                 <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border border-purple-100 shadow-sm h-full flex flex-col">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 bg-arsci-cyan/20 rounded-lg">
-                    <svg className="w-5 h-5 text-arsci-cyan-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  </div>
                   <div>
                     <Typography variant="h6" className="text-gray-800 font-semibold">
                       Add Student
-                    </Typography>
-                    <Typography variant="small" className="text-gray-600">
-                      Use ↓ arrow keys to navigate between fields
                     </Typography>
                   </div>
                 </div>
@@ -1069,9 +1046,6 @@ export function Students() {
                     disabled={loading || !batchSection || !batchFirstName.trim() || !batchLastName.trim() || !batchUsername.trim() || !batchPassword.trim() || batchPasswordTooShort}
                     size="lg"
                   >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
                     Add to List
                   </Button>
                 </div>
