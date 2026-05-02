@@ -8,6 +8,7 @@ import { fetchStudents } from "@/api/students";
 import { fetchSections } from "@/api/sections";
 import { useAuth } from "@/context/AuthContext";
 import { MODULE_IDS } from "@/api/modules";
+import { MODULE_META } from "@/data/module-meta";
 import { fetchQuizResults } from "@/api/quizResults";
 import { useNavigate } from "react-router-dom";
 
@@ -123,7 +124,7 @@ export function Home() {
                   allActivities.push({
                     id: `quiz-${r.username}-${mid}-${dt.getTime()}`,
                     user: r.username,
-                    action: `${scoreText} Module ${mid}`,
+                    action: `${scoreText} ${MODULE_META[mid] || mid}`,
                     timeDate: dt,
                     color: "bg-arsci-cyan-dark"
                   });
@@ -250,7 +251,7 @@ export function Home() {
         },
       },
       xaxis: {
-        categories: MODULE_IDS.map(m => `Module ${m}`),
+        categories: MODULE_IDS.map(m => MODULE_META[m] || m),
         axisBorder: { show: false },
         axisTicks: { show: false },
         labels: { style: { colors: "#9ca3af", fontSize: "12px", fontFamily: "Inter" } },
