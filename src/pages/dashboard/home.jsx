@@ -18,6 +18,8 @@ export function Home() {
   const [sectionCount, setSectionCount] = useState(null);
   const [avgQuizScore, setAvgQuizScore] = useState(null);
   const [avgProgress, setAvgProgress] = useState(null);
+  const [chartData, setChartData] = useState([]);
+  const [activitiesData, setActivitiesData] = useState([]);
 
   useEffect(() => {
     async function loadDashboard() {
@@ -38,6 +40,30 @@ export function Home() {
         let progressN = 0;
         let scoreSum = 0;
         let scoreN = 0;
+        
+        // Chart & Activity Aggregates
+        const modScores = {};
+        MODULE_IDS.forEach(mid => modScores[mid] = { sum: 0, count: 0 });
+        const allActivities = [];
+
+        // Collect student additions for activity feed
+        if (Array.isArray(students)) {
+          students.forEach(s => {
+            const rawDt = s.createdAt || s.created_at;
+            if (rawDt) {
+              const dt = new Date(rawDt);
+              if (!isNaN(dt)) {
+                allActivities.push({
+                  id: `student-${s.username}`,
+                  user: `${s.firstName || ''} ${s.lastName || ''}`.trim() || s.username,
+                  action: "was added to the system",
+                  timeDate: dt,
+                  color: "bg-arsci-pink"
+                });
+              }
+            }
+          });
+        }
 
         // Fetch per section/module results (best-effort; ignore failures)
         for (const sec of sections || []) {
@@ -71,6 +97,37 @@ export function Home() {
                     scoreN += 1;
                   }
                 }
+                
+                // Add to chart module averages regardless of window
+                let mScoreVal = null;
+                if (typeof r?.percentage === "number") mScoreVal = r.percentage;
+                else if (typeof r?.score === "number") mScoreVal = r.score;
+                else if (typeof r?.points === "number" && r?.totalPoints) {
+                  const pct = (r.points / r.totalPoints) * 100;
+                  if (isFinite(pct)) mScoreVal = pct;
+                }
+                if (typeof mScoreVal === "number") {
+                  const clamped = Math.max(0, Math.min(100, mScoreVal));
+                  modScores[mid].sum += clamped;
+                  modScores[mid].count += 1;
+                }
+
+                // Add to activity feed
+                if (dt instanceof Date && !isNaN(dt) && r.username) {
+                  let scoreText = "";
+                  if (typeof mScoreVal === "number") {
+                     scoreText = ` scored ${Math.round(mScoreVal)}% on`;
+                  } else {
+                     scoreText = ` completed`;
+                  }
+                  allActivities.push({
+                    id: `quiz-${r.username}-${mid}-${dt.getTime()}`,
+                    user: r.username,
+                    action: `${scoreText} Module ${mid}`,
+                    timeDate: dt,
+                    color: "bg-arsci-cyan-dark"
+                  });
+                }
               }
             } catch (_) {
               // ignore
@@ -80,6 +137,30 @@ export function Home() {
 
         setAvgQuizScore(scoreN > 0 ? Math.round((scoreSum / scoreN) * 10) / 10 : 0);
         setAvgProgress(progressN > 0 ? Math.round((progressSum / progressN) * 10) / 10 : 0);
+
+        // Process Chart Data
+        const finalChartData = MODULE_IDS.map(mid => {
+           if (modScores[mid].count === 0) return 0;
+           return Math.round(modScores[mid].sum / modScores[mid].count);
+        });
+        setChartData(finalChartData);
+
+        // Process Activity Feed
+        allActivities.sort((a, b) => b.timeDate - a.timeDate);
+        const topActivities = allActivities.slice(0, 5).map(act => {
+           const diffMs = new Date() - act.timeDate;
+           const diffMins = Math.floor(diffMs / 60000);
+           const diffHours = Math.floor(diffMins / 60);
+           const diffDays = Math.floor(diffHours / 24);
+           let timeStr = "just now";
+           if (diffDays > 0) timeStr = `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+           else if (diffHours > 0) timeStr = `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+           else if (diffMins > 0) timeStr = `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
+           
+           return { ...act, time: timeStr };
+        });
+        setActivitiesData(topActivities);
+
       } catch (e) {
         console.error("Failed to fetch dashboard:", e);
         setAvgQuizScore(0);
@@ -148,7 +229,7 @@ export function Home() {
     series: [
       {
         name: "Avg Quiz Score",
-        data: [75, 82, 78, 88, 92, 85, 95],
+        data: chartData.length > 0 ? chartData : [0, 0, 0, 0],
       },
     ],
     options: {
@@ -169,7 +250,7 @@ export function Home() {
         },
       },
       xaxis: {
-        categories: ["Quiz 1", "Quiz 2", "Quiz 3", "Quiz 4", "Quiz 5", "Quiz 6", "Quiz 7"],
+        categories: MODULE_IDS.map(m => `Module ${m}`),
         axisBorder: { show: false },
         axisTicks: { show: false },
         labels: { style: { colors: "#9ca3af", fontSize: "12px", fontFamily: "Inter" } },
@@ -181,13 +262,6 @@ export function Home() {
       tooltip: { theme: "dark" },
     },
   };
-
-  // Recent Activity Data
-  const recentActivities = [
-    { id: 1, user: "Juan Dela Cruz", action: "completed Module 1: Intro to AR", time: "2 hours ago", color: "bg-arsci-pink" },
-    { id: 2, user: "Maria Santos", action: "scored 95% on Quiz: Solar System", time: "5 hours ago", color: "bg-arsci-cyan-dark" },
-    { id: 3, user: "Grade 6 - Archimedes", action: "was added by Teacher", time: "1 day ago", color: "bg-arsci-purple" },
-  ];
 
   return (
     <div className="max-w-5xl mx-auto mt-10 mb-16 flex flex-col gap-10"> 
@@ -263,7 +337,7 @@ export function Home() {
             <div className="rounded-xl p-5 border shadow-sm" style={{ background: 'rgba(255, 255, 255, 0.8)', borderColor: 'rgba(155, 142, 200, 0.15)' }}>
               <Typography variant="h6" className="font-semibold mb-6" style={{ color: '#1a1a5e' }}>Recent Activity</Typography>
               <div className="flex flex-col gap-5">
-                {recentActivities.map((act) => (
+                {activitiesData.length > 0 ? activitiesData.map((act) => (
                   <div key={act.id} className="flex items-start gap-4">
                     <div className={`w-2.5 h-2.5 mt-1.5 rounded-full ${act.color} shadow-sm shrink-0`} />
                     <div>
@@ -272,7 +346,9 @@ export function Home() {
                       <Typography variant="small" className="text-gray-400 text-xs mt-0.5">{act.time}</Typography>
                     </div>
                   </div>
-                ))}
+                )) : (
+                  <Typography variant="small" className="text-gray-500 italic text-center py-4">No recent activity found.</Typography>
+                )}
               </div>
             </div>
           </div>
