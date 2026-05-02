@@ -92,8 +92,37 @@ export function Home() {
               const res = await fetchQuizResults(sec.section, mid);
               const list = Array.isArray(res?.results) ? res.results : [];
               for (const r of list) {
-                const dt = new Date(r?.submittedAt || r?.completedAt || r?.progressCompleted || 0);
-                const inWindow = dt instanceof Date && !isNaN(dt) && dt >= sevenDaysAgo;
+                // Parse timestamp correctly, including fallbacks
+                let rawDt = r?.updatedAt || r?.updated_at || r?.lastUpdated || r?.completedAt || r?.progressCompleted || r?.timestamp || r?.submittedAt;
+                
+                // If missing but completed, try to fetch the synthetic timestamp from localStorage (saved by quiz.jsx)
+                if (!rawDt && (r?.status === "completed" || typeof r?.score === "number" || typeof r?.percentage === "number")) {
+                   try {
+                     const key = `scoreSeenAt:${sec.section}:${mid}:${r?.username || r?.name || "unknown"}`;
+                     const existing = localStorage.getItem(key);
+                     if (existing) rawDt = Number(existing);
+                     else {
+                       // If completely new and no timestamp, let's assume it was just seen now
+                       rawDt = Date.now();
+                       localStorage.setItem(key, String(rawDt));
+                     }
+                   } catch (_) {}
+                }
+
+                let dt = new Date(0); // fallback
+                if (rawDt && typeof rawDt === "object" && rawDt.seconds) {
+                  dt = new Date(rawDt.seconds * 1000);
+                } else if (typeof rawDt === "number") {
+                  dt = new Date(rawDt > 1e12 ? rawDt : rawDt * 1000);
+                } else if (typeof rawDt === "string" && /^\d+(\.\d+)?$/.test(rawDt)) {
+                  const n = parseFloat(rawDt);
+                  dt = new Date(n > 1e12 ? n : n * 1000);
+                } else if (rawDt) {
+                  dt = new Date(rawDt);
+                }
+
+                const isValidDate = dt instanceof Date && !isNaN(dt) && dt.getTime() > 0;
+                const inWindow = isValidDate && dt >= sevenDaysAgo;
                 if (typeof r?.progress === "number") {
                   progressSum += r.progress;
                   progressN += 1;
@@ -133,7 +162,7 @@ export function Home() {
                 }
 
                 // Add to activity feed
-                if (dt instanceof Date && !isNaN(dt) && r.username) {
+                if (isValidDate && r.username) {
                   let scoreText = "";
                   if (typeof mScoreVal === "number") {
                      scoreText = ` scored ${Math.round(mScoreVal)}% on`;
