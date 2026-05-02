@@ -697,11 +697,11 @@ export function Students() {
             {/* Left: Enhanced staged list */}
             <div className="space-y-4">
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 px-6 py-4 border-b border-green-100">
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-4 border-b border-purple-100">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-green-100 rounded-lg">
-                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="p-2 bg-arsci-purple/20 rounded-lg">
+                        <svg className="w-5 h-5 text-arsci-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
                       </div>
@@ -776,7 +776,7 @@ export function Students() {
                   {stagedStudents.map((s) => (
                   <div
                     key={s.username}
-                    className="flex items-center justify-between rounded-lg border border-blue-200 bg-blue-50/80 px-4 py-3 shadow-sm hover:bg-blue-100 transition-colors"
+                    className="flex items-center justify-between rounded-lg border border-purple-200 bg-purple-50/50 px-4 py-3 shadow-sm hover:bg-purple-100/50 transition-colors"
                   >
                     {editingStagedStudent === s.username ? (
                       // Edit mode
@@ -827,12 +827,12 @@ export function Students() {
                       // Display mode
                       <>
                         <div className="flex items-center gap-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white text-sm font-semibold">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-arsci-navy to-arsci-purple text-white text-sm font-semibold">
                             {s.firstName?.charAt(0)?.toUpperCase() || "?"}
                           </div>
                           <div>
                             <div 
-                              className="font-semibold text-blue-gray-800 cursor-pointer hover:text-blue-600 hover:underline"
+                              className="font-semibold text-blue-gray-800 cursor-pointer hover:text-arsci-pink hover:underline"
                               onClick={() => handleEditStagedStudent(s)}
                               title="Click to edit"
                             >
@@ -864,7 +864,7 @@ export function Students() {
                 {/* Submit button */}
                 <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100">
                   <Button 
-                    className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-md hover:shadow-lg" 
+                    className="w-full arsci-btn-gradient rounded-xl shadow-md hover:shadow-lg" 
                     onClick={handlePanelSubmit} 
                     disabled={loading || stagedStudents.length === 0 || !batchSection}
                     size="lg"
@@ -880,10 +880,10 @@ export function Students() {
 
             {/* Right: Enhanced add form */}
             <div className="space-y-6">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100 shadow-sm">
+              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border border-purple-100 shadow-sm">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="p-2 bg-arsci-cyan/20 rounded-lg">
+                    <svg className="w-5 h-5 text-arsci-cyan-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
@@ -1078,7 +1078,7 @@ export function Students() {
                     </Typography>
                   )}
                   <Button 
-                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg" 
+                    className="w-full arsci-btn-gradient rounded-xl shadow-md hover:shadow-lg" 
                     onClick={handleAddToStaged} 
                     disabled={loading || !batchSection || !batchFirstName.trim() || !batchLastName.trim() || !batchUsername.trim() || !batchPassword.trim() || batchPasswordTooShort}
                     size="lg"

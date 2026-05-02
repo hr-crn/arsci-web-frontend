@@ -32,16 +32,15 @@ export function Sidenav({ brandImg, brandName, routes }) {
 
   return (
     <aside
-      className={`${sidenavTypes[sidenavType]} ${
-        openSidenav ? "translate-x-0" : "-translate-x-80"
-      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-2xl transition-transform duration-300 xl:translate-x-0 border border-arsci-purple/20 shadow-xl`}
+      className={`${sidenavTypes[sidenavType]} ${openSidenav ? "translate-x-0" : "-translate-x-80"
+        } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-2xl transition-transform duration-300 xl:translate-x-0 border border-arsci-purple/20 shadow-xl`}
     >
       <div
         className={`relative`}
       >
         <Link to="/dashboard/home" className="py-5 px-8 text-center block">
           <img
-            src="/img/square.png"
+            src="/img/circle.png"
             alt="ARSCI Logo"
             className="mx-auto w-20 h-20 object-contain drop-shadow-lg"
             style={{ filter: 'drop-shadow(0 0 12px rgba(155, 142, 200, 0.3))' }}
@@ -60,7 +59,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
           <XMarkIcon strokeWidth={2.5} className="h-5 w-5 text-white" />
         </IconButton>
       </div>
-      
+
       <div className="m-4">
         {routes.map(({ layout, title, pages }, key) => (
           <ul key={key} className="mb-4 flex flex-col gap-1">
@@ -89,8 +88,8 @@ export function Sidenav({ brandImg, brandName, routes }) {
                               isActive
                                 ? (sidenavColor === "dark" ? "blue-gray" : sidenavColor)
                                 : sidenavType === "dark"
-                                ? "white"
-                                : "blue-gray"
+                                  ? "white"
+                                  : "blue-gray"
                             }
                             className="flex items-center gap-4 px-4 capitalize"
                             fullWidth
@@ -117,7 +116,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                         </div>
                       )}
                     </NavLink>
-                    
+
                     {/* Dropdown Menu */}
                     {studentsDropdownOpen && (
                       <div className="ml-4 mt-2 space-y-1">
@@ -142,7 +141,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                             </Button>
                           )}
                         </NavLink>
-                        
+
                         <Button
                           variant="text"
                           color={sidenavType === "dark" ? "white" : "blue-gray"}
@@ -177,8 +176,8 @@ export function Sidenav({ brandImg, brandName, routes }) {
                           isActive
                             ? (sidenavColor === "dark" ? "blue-gray" : sidenavColor)
                             : sidenavType === "dark"
-                            ? "white"
-                            : "blue-gray"
+                              ? "white"
+                              : "blue-gray"
                         }
                         className="flex items-center gap-4 px-4 capitalize"
                         fullWidth
