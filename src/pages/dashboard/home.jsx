@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import Chart from "react-apexcharts";
 import { StatisticsCard } from "@/widgets/cards";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import PageHeader from "@/widgets/layout/PageHeader";
-import { UsersIcon, SwatchIcon, ArrowDownOnSquareStackIcon } from "@heroicons/react/24/solid";
+import { UsersIcon, SwatchIcon, ArrowDownOnSquareStackIcon, ChartBarIcon, DocumentTextIcon } from "@heroicons/react/24/solid";
 import { fetchStudents } from "@/api/students";
 import { fetchSections } from "@/api/sections";
 import { useAuth } from "@/context/AuthContext";
@@ -91,53 +92,101 @@ export function Home() {
   // Build cards inline (no src/data dependency)
   const cards = [
     {
-      color: "gray",
+      color: "deep-purple",
       icon: SwatchIcon,
       title: "Total Section",
       value: sectionCount !== null ? String(sectionCount) : "...",
       footer: {
-        color: "text-green-500",
+        color: "text-arsci-purple",
         value: "View Sections",
-        label: "",
+        label: " | New sections added",
         path: "/dashboard/section",
       },
     },
     {
-      color: "gray",
+      color: "pink",
       icon: UsersIcon,
       title: "Total Student",
       value: studentCount !== null ? String(studentCount) : "...",
       footer: {
-        color: "text-green-500",
+        color: "text-arsci-pink",
         value: "View Students",
-        label: "",
+        label: " | ↑ 5% from last month",
         path: "/dashboard/students",
       },
     },
     {
-      color: "gray",
-      icon: ArrowDownOnSquareStackIcon,
+      color: "cyan",
+      icon: ChartBarIcon,
       title: "Avg Quiz Score (7d)",
       value: avgQuizScore !== null ? `${avgQuizScore}%` : "...",
       footer: {
-        color: "text-green-500",
+        color: "text-arsci-cyan-dark",
         value: "View Quizzes",
-        label: "",
+        label: " | ↑ 2% from last week",
         path: "/dashboard/quiz",
       },
     },
     {
-      color: "gray",
-      icon: ArrowDownOnSquareStackIcon,
+      color: "indigo",
+      icon: DocumentTextIcon,
       title: "Avg Module Progress",
       value: avgProgress !== null ? `${avgProgress}%` : "...",
       footer: {
-        color: "text-green-500",
+        color: "text-indigo-500",
         value: "View Module Progress",
-        label: "",
+        label: " | Steady engagement",
         path: "/dashboard/module",
       },
     },
+  ];
+
+  // Chart Configuration
+  const chartConfig = {
+    type: "area",
+    height: 280,
+    series: [
+      {
+        name: "Avg Quiz Score",
+        data: [75, 82, 78, 88, 92, 85, 95],
+      },
+    ],
+    options: {
+      chart: { toolbar: { show: false } },
+      dataLabels: { enabled: false },
+      stroke: { curve: "smooth", width: 3, colors: ["#e054c0"] },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.4,
+          opacityTo: 0.05,
+          stops: [0, 100],
+          colorStops: [
+            { offset: 0, color: "#e054c0", opacity: 0.4 },
+            { offset: 100, color: "#9b8ec8", opacity: 0.05 },
+          ]
+        },
+      },
+      xaxis: {
+        categories: ["Quiz 1", "Quiz 2", "Quiz 3", "Quiz 4", "Quiz 5", "Quiz 6", "Quiz 7"],
+        axisBorder: { show: false },
+        axisTicks: { show: false },
+        labels: { style: { colors: "#9ca3af", fontSize: "12px", fontFamily: "Inter" } },
+      },
+      yaxis: {
+        labels: { style: { colors: "#9ca3af", fontSize: "12px", fontFamily: "Inter" } },
+      },
+      grid: { show: true, borderColor: "#f3f4f6", strokeDashArray: 4 },
+      tooltip: { theme: "dark" },
+    },
+  };
+
+  // Recent Activity Data
+  const recentActivities = [
+    { id: 1, user: "Juan Dela Cruz", action: "completed Module 1: Intro to AR", time: "2 hours ago", color: "bg-arsci-pink" },
+    { id: 2, user: "Maria Santos", action: "scored 95% on Quiz: Solar System", time: "5 hours ago", color: "bg-arsci-cyan-dark" },
+    { id: 3, user: "Grade 6 - Archimedes", action: "was added by Teacher", time: "1 day ago", color: "bg-arsci-purple" },
   ];
 
   return (
@@ -194,6 +243,37 @@ export function Home() {
               >
                 Export Class Record (CSV)
               </button>
+            </div>
+          </div>
+
+          {/* Main Dashboard Content Grid */}
+          <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Chart Area */}
+            <div className="lg:col-span-2 rounded-xl p-5 border shadow-sm" style={{ background: 'rgba(255, 255, 255, 0.8)', borderColor: 'rgba(155, 142, 200, 0.15)' }}>
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  <Typography variant="h6" className="font-semibold" style={{ color: '#1a1a5e' }}>Recent Quiz Performance</Typography>
+                  <Typography variant="small" className="text-gray-500 font-normal">Average scores across all sections</Typography>
+                </div>
+              </div>
+              <Chart {...chartConfig} />
+            </div>
+
+            {/* Recent Activity */}
+            <div className="rounded-xl p-5 border shadow-sm" style={{ background: 'rgba(255, 255, 255, 0.8)', borderColor: 'rgba(155, 142, 200, 0.15)' }}>
+              <Typography variant="h6" className="font-semibold mb-6" style={{ color: '#1a1a5e' }}>Recent Activity</Typography>
+              <div className="flex flex-col gap-5">
+                {recentActivities.map((act) => (
+                  <div key={act.id} className="flex items-start gap-4">
+                    <div className={`w-2.5 h-2.5 mt-1.5 rounded-full ${act.color} shadow-sm shrink-0`} />
+                    <div>
+                      <Typography variant="small" className="font-medium text-gray-800">{act.user}</Typography>
+                      <Typography variant="small" className="text-gray-600 text-xs">{act.action}</Typography>
+                      <Typography variant="small" className="text-gray-400 text-xs mt-0.5">{act.time}</Typography>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </CardBody>
