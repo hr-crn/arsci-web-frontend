@@ -21,9 +21,13 @@ export function Home() {
   const [avgProgress, setAvgProgress] = useState(null);
   const [chartData, setChartData] = useState([]);
   const [activitiesData, setActivitiesData] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [lastRefreshed, setLastRefreshed] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     async function loadDashboard() {
+      setIsRefreshing(true);
       try {
         const [students, sections] = await Promise.all([
           fetchStudents(),
@@ -94,20 +98,6 @@ export function Home() {
               for (const r of list) {
                 // Parse timestamp correctly, including fallbacks
                 let rawDt = r?.updatedAt || r?.updated_at || r?.lastUpdated || r?.completedAt || r?.progressCompleted || r?.timestamp || r?.submittedAt;
-                
-                // If missing but completed, try to fetch the synthetic timestamp from localStorage (saved by quiz.jsx)
-                if (!rawDt && (r?.status === "completed" || typeof r?.score === "number" || typeof r?.percentage === "number")) {
-                   try {
-                     const key = `scoreSeenAt:${sec.section}:${mid}:${r?.username || r?.name || "unknown"}`;
-                     const existing = localStorage.getItem(key);
-                     if (existing) rawDt = Number(existing);
-                     else {
-                       // If completely new and no timestamp, let's assume it was just seen now
-                       rawDt = Date.now();
-                       localStorage.setItem(key, String(rawDt));
-                     }
-                   } catch (_) {}
-                }
 
                 let dt = new Date(0); // fallback
                 if (rawDt && typeof rawDt === "object" && rawDt.seconds) {
@@ -233,10 +223,13 @@ export function Home() {
         console.error("Failed to fetch dashboard:", e);
         setAvgQuizScore(0);
         setAvgProgress(0);
+      } finally {
+        setIsRefreshing(false);
+        setLastRefreshed(new Date());
       }
     }
     loadDashboard();
-  }, []);
+  }, [refreshKey]);
 
   // Build cards inline (no src/data dependency)
   const cards = [
@@ -402,8 +395,32 @@ export function Home() {
             </div>
 
             {/* Recent Activity */}
-            <div className="rounded-xl p-5 border shadow-sm" style={{ background: 'rgba(255, 255, 255, 0.8)', borderColor: 'rgba(155, 142, 200, 0.15)' }}>
-              <Typography variant="h6" className="font-semibold mb-6" style={{ color: '#1a1a5e' }}>Recent Activity</Typography>
+             <div className="rounded-xl p-5 border shadow-sm" style={{ background: 'rgba(255, 255, 255, 0.8)', borderColor: 'rgba(155, 142, 200, 0.15)' }}>
+              <div className="flex items-center justify-between mb-6">
+                <Typography variant="h6" className="font-semibold" style={{ color: '#1a1a5e' }}>Recent Activity</Typography>
+                <button
+                  type="button"
+                  title="Refresh activity feed"
+                  onClick={() => setRefreshKey(k => k + 1)}
+                  disabled={isRefreshing}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all hover:bg-purple-50 disabled:opacity-50"
+                  style={{ color: '#9b8ec8', border: '1px solid rgba(155,142,200,0.3)' }}
+                >
+                  <svg
+                    className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`}
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  {isRefreshing ? 'Refreshing…' : 'Refresh'}
+                </button>
+              </div>
+              {lastRefreshed && !isRefreshing && (
+                <p className="text-[10px] text-gray-400 mb-3 -mt-4">
+                  Updated {lastRefreshed.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit', hour12: true })}
+                </p>
+              )}
               <div className="flex flex-col gap-5">
                 {activitiesData.length > 0 ? activitiesData.map((act) => (
                   <div key={act.id} className="flex items-start gap-4">
