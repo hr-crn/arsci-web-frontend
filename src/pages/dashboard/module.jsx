@@ -140,70 +140,38 @@ export function Module() {
           )}
         />
         <CardBody className="px-6 pt-0 pb-6">
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[640px] table-auto">
-                <thead className="bg-gray-50">
-                  <tr>
-                    {[
-                      { key: "MODULE NAME", icon: "📚" },
-                      { key: "ACTIONS", icon: "⚙️" }
-                    ].map((col) => (
-                      <th
-                        key={col.key}
-                        className="border-b border-gray-200 py-4 px-6 text-left"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm">{col.icon}</span>
-                          <Typography
-                            variant="small"
-                            className="text-xs font-bold uppercase text-gray-600 tracking-wider"
-                          >
-                            {col.key}
-                          </Typography>
-                        </div>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {MODULE_IDS.map((moduleID, index) => (
-                    <tr key={moduleID} className={`hover:bg-blue-50/50 transition-colors duration-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
-                      <td className="py-4 px-6">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <span className="text-lg">📖</span>
-                          </div>
-                          <div>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-semibold text-base"
-                            >
-                              {MODULE_META[moduleID] || moduleTitles[moduleID] || moduleID}
-                            </Typography>
-                            <Typography variant="small" className="text-gray-500 text-sm">
-                              Learning Module
-                            </Typography>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-4 px-6">
-                        <button
-                          className="flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-200 text-sm font-medium"
-                          onClick={() => handleViewProgressPanel(moduleID)}
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                          </svg>
-                          View Progress
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
+            {MODULE_IDS.map((moduleID, index) => (
+              <div 
+                key={moduleID} 
+                className="group relative bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
+              >
+                {/* Decorative Background Glow */}
+                <div className={`absolute top-0 right-0 w-32 h-32 rounded-bl-[100px] opacity-10 transition-opacity duration-300 group-hover:opacity-20 ${index % 2 === 0 ? 'bg-arsci-cyan-dark' : 'bg-arsci-pink'}`} />
+                
+                <div className="relative z-10">
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-inner ${index % 2 === 0 ? 'bg-gradient-to-br from-arsci-cyan to-blue-500' : 'bg-gradient-to-br from-arsci-pink to-arsci-purple'}`}>
+                    <span className="text-2xl text-white">📖</span>
+                  </div>
+                  <Typography variant="h5" color="blue-gray" className="font-bold mb-1 group-hover:text-arsci-purple transition-colors">
+                    {MODULE_META[moduleID] || moduleTitles[moduleID] || moduleID}
+                  </Typography>
+                  <Typography variant="small" className="text-gray-500 font-medium mb-8">
+                    Learning Module
+                  </Typography>
+                </div>
+
+                <button
+                  className="relative z-10 w-full flex items-center justify-center gap-2 py-3.5 bg-gray-50 hover:bg-white text-gray-800 hover:text-arsci-purple rounded-xl font-semibold transition-all duration-300 border border-gray-200 hover:border-arsci-purple shadow-sm hover:shadow-md"
+                  onClick={() => handleViewProgressPanel(moduleID)}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  </svg>
+                  View Progress
+                </button>
+              </div>
+            ))}
           </div>
         </CardBody>
       </Card>
