@@ -75,58 +75,59 @@ export function SignIn() {
   }, [login, navigate]);
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl flex items-center justify-center gap-8">
-        {/* Left side - Login Form */}
-        <div className="w-full lg:w-1/2 max-w-md">
-          <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
-            <CardBody className="p-8">
-              {/* Header */}
-              <div className="text-center mb-8">
-                <img src="/img/01.png" alt="arsci-logo" className="h-20 w-20 mx-auto mb-4 object-contain rounded" />
-                <Typography variant="h3" className="font-bold mb-2 text-gray-800">
-                  Welcome!
-                </Typography>
-                <Typography variant="paragraph" color="blue-gray" className="text-base font-normal">
-                  Sign in to access your dashboard and manage your students
-                </Typography>
-              </div>
+    <section className="relative min-h-screen flex items-center justify-center p-4 overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a0a2e 0%, #0f0f3d 30%, #1a1a5e 60%, #141450 100%)' }}>
+      {/* Animated background orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full opacity-20 animate-pulse-glow" style={{ background: 'radial-gradient(circle, #e054c0 0%, transparent 70%)' }} />
+        <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full opacity-15 animate-pulse-glow" style={{ background: 'radial-gradient(circle, #4cf0d0 0%, transparent 70%)', animationDelay: '1.5s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-10 animate-pulse-glow" style={{ background: 'radial-gradient(circle, #9b8ec8 0%, transparent 70%)', animationDelay: '3s' }} />
+      </div>
 
-              {/* Google Sign-In only */}
-              {errorMsg && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-                  <Typography variant="small" color="red" className="font-medium">
-                    {errorMsg}
-                  </Typography>
-                </div>
-              )}
-
-              <div className="flex justify-center">
-                <div ref={googleDivRef} className="w-[320px] h-12 flex items-center justify-center" />
-              </div>
-            </CardBody>
-          </Card>
+      {/* Main card */}
+      <div className="relative z-10 w-full max-w-md animate-fade-in-up">
+        {/* Logo */}
+        <div className="flex justify-center mb-8">
+          <div className="animate-float">
+            <img
+              src="/img/circle.png"
+              alt="ARSCI Logo"
+              className="w-36 h-36 object-contain drop-shadow-2xl"
+              style={{ filter: 'drop-shadow(0 0 30px rgba(155, 142, 200, 0.4))' }}
+            />
+          </div>
         </div>
 
-        {/* Right side - Illustration */}
-        <div className="hidden lg:block lg:w-1/2">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-blue-800/20 rounded-3xl"></div>
-            <img
-              src="/img/pattern.png"
-              className="h-96 w-full object-cover rounded-3xl shadow-2xl"
-              alt="Login illustration"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent rounded-3xl flex items-end p-8">
-              <div className="text-white">
-                <Typography variant="h4" className="font-bold mb-2">
-                  ARSCI Education Platform
-                </Typography>
-                <Typography variant="paragraph" className="opacity-90">
-                  Empowering teachers with modern tools for student management and progress tracking
-                </Typography>
-              </div>
+        {/* Glass card */}
+        <div className="arsci-glass rounded-2xl p-8 arsci-glow-pink" style={{ background: 'rgba(15, 15, 61, 0.6)', border: '1px solid rgba(155, 142, 200, 0.2)' }}>
+          {/* Header text */}
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">
+              Welcome<span className="arsci-gradient-text">!</span>
+            </h2>
+            <p className="text-sm font-normal" style={{ color: 'rgba(184, 174, 216, 0.8)' }}>
+              Sign in to access your dashboard and manage your students
+            </p>
+          </div>
+
+          {/* Error message */}
+          {errorMsg && (
+            <div className="rounded-lg p-3 mb-5" style={{ background: 'rgba(224, 84, 192, 0.15)', border: '1px solid rgba(224, 84, 192, 0.3)' }}>
+              <p className="text-sm font-medium" style={{ color: '#f078d8' }}>
+                {errorMsg}
+              </p>
             </div>
+          )}
+
+          {/* Google Sign-In */}
+          <div className="flex justify-center">
+            <div ref={googleDivRef} className="w-[320px] h-12 flex items-center justify-center" />
+          </div>
+
+          {/* Divider */}
+          <div className="mt-8 pt-6" style={{ borderTop: '1px solid rgba(155, 142, 200, 0.15)' }}>
+            <p className="text-center text-xs" style={{ color: 'rgba(155, 142, 200, 0.5)' }}>
+              ARSCI — Augmented Reality Learning Media for Science and Technology
+            </p>
           </div>
         </div>
       </div>

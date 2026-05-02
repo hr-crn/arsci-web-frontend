@@ -15,11 +15,11 @@ export function Dashboard() {
   const { sidenavType } = controller;
 
   return (
-    <div className="min-h-screen bg-blue-gray-50/50">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #f0eef5 0%, #e8e4f0 50%, #edf0f8 100%)' }}>
       <Sidenav
         routes={routes}
         brandImg={
-          sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
+          sidenavType === "dark" ? "/img/square.png" : "/img/square.png"
         }
       />
       <div className="p-4 xl:ml-80">

@@ -81,8 +81,7 @@ export function DashboardNavbar() {
           {/* Logout Button */}
           <Button
             size="sm"
-            color="red"
-            className="normal-case"
+            className="normal-case arsci-btn-gradient rounded-lg"
             onClick={handleLogout}
           >
             Logout

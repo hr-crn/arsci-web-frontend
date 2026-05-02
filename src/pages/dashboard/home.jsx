@@ -167,26 +167,29 @@ export function Home() {
             ))}
           </div>
           {/* Quick Actions */}
-          <div className="mt-8 bg-gray-50 border border-gray-100 rounded-lg p-4">
-            <Typography variant="small" className="text-gray-700 font-medium mb-3">Quick Actions</Typography>
+          <div className="mt-8 rounded-xl p-5" style={{ background: 'rgba(15, 15, 61, 0.04)', border: '1px solid rgba(155, 142, 200, 0.15)' }}>
+            <Typography variant="small" className="font-medium mb-3" style={{ color: '#1a1a5e' }}>Quick Actions</Typography>
             <div className="flex flex-wrap gap-3">
               <button
                 type="button"
-                className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                className="px-4 py-2.5 text-white rounded-xl hover:opacity-90 text-sm font-medium transition-all"
+                style={{ background: 'linear-gradient(135deg, #e054c0, #9b8ec8)', boxShadow: '0 4px 12px rgba(224, 84, 192, 0.25)' }}
                 onClick={() => navigate("/dashboard/students?action=add-batch")}
               >
                 Add Student
               </button>
               <button
                 type="button"
-                className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                className="px-4 py-2.5 text-white rounded-xl hover:opacity-90 text-sm font-medium transition-all"
+                style={{ background: 'linear-gradient(135deg, #1a1a5e, #9b8ec8)', boxShadow: '0 4px 12px rgba(26, 26, 94, 0.25)' }}
                 onClick={() => navigate("/dashboard/section")}
               >
                 Add Section
               </button>
               <button
                 type="button"
-                className="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 text-sm"
+                className="px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+                style={{ background: 'white', border: '1px solid rgba(155, 142, 200, 0.3)', color: '#1a1a5e' }}
                 onClick={() => navigate("/dashboard/section")}
               >
                 Export Class Record (CSV)

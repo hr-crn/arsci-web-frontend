@@ -48,11 +48,10 @@ export function Configurator() {
 
   const sidenavColors = {
     white: "from-gray-100 to-gray-100 border-gray-200",
-    dark: "from-black to-black border-gray-200",
-    green: "from-green-400 to-green-600",
-    orange: "from-orange-400 to-orange-600",
-    red: "from-red-400 to-red-600",
-    pink: "from-pink-400 to-pink-600",
+    dark: "from-arsci-navy to-arsci-navy border-gray-200",
+    pink: "from-arsci-pink to-arsci-pink-light",
+    cyan: "from-arsci-cyan to-arsci-cyan-light",
+    purple: "from-arsci-purple to-arsci-purple-light",
   };
 
   React.useEffect(() => {
@@ -147,30 +146,7 @@ export function Configurator() {
           </div>
           <hr />
           <div className="my-8 flex flex-col gap-4">
-            <a
-              href="https://www.creative-tim.com/product/material-tailwind-dashboard-react?rel=mtdr"
-              target="_black"
-            >
-              <Button variant="gradient" fullWidth>
-                Free Download
-              </Button>
-            </a>
-            <a
-              href="https://www.material-tailwind.com/docs/react/installation?rel=mtdr"
-              target="_black"
-            >
-              <Button variant="outlined" color="blue-gray" fullWidth>
-                View Documentation
-              </Button>
-            </a>
-            <a
-              href="https://www.material-tailwind.com/blocks/react?rel=mtdr"
-              target="_black"
-            >
-              <Button variant="outlined" color="blue-gray" fullWidth>
-                Material Tailwind PRO
-              </Button>
-            </a>
+            {/* Removed Creative Tim references */}
           </div>
           <a
             className="mx-auto flex items-center justify-center gap-2"

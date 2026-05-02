@@ -2,7 +2,146 @@
 @tailwind components;
 @tailwind utilities; 
 
-/* Scoped fixes for Students page filter dropdown to avoid bullets and overlap */
+/* ========== ARSCI Theme Global Styles ========== */
+
+@layer base {
+  body {
+    font-family: 'Inter', 'Roboto', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* Glassmorphism card */
+  .arsci-glass {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  
+  .arsci-glass-light {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  /* Gradient text */
+  .arsci-gradient-text {
+    background: linear-gradient(135deg, #e054c0, #4cf0d0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Gradient border */
+  .arsci-gradient-border {
+    position: relative;
+    border-radius: 1rem;
+  }
+  .arsci-gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, #e054c0, #9b8ec8, #4cf0d0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Pink-cyan gradient button */
+  .arsci-btn-gradient {
+    background: linear-gradient(135deg, #e054c0, #9b8ec8);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(224, 84, 192, 0.3);
+  }
+  .arsci-btn-gradient:hover {
+    background: linear-gradient(135deg, #f078d8, #b8aed8);
+    box-shadow: 0 6px 25px rgba(224, 84, 192, 0.4);
+    transform: translateY(-1px);
+  }
+
+  /* Subtle glow effect */
+  .arsci-glow-pink {
+    box-shadow: 0 0 20px rgba(224, 84, 192, 0.15), 0 0 60px rgba(224, 84, 192, 0.05);
+  }
+  .arsci-glow-cyan {
+    box-shadow: 0 0 20px rgba(76, 240, 208, 0.15), 0 0 60px rgba(76, 240, 208, 0.05);
+  }
+}
+
+/* ========== Animations ========== */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out both;
+}
+
+/* ========== Scrollbar Styling ========== */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 15, 61, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(155, 142, 200, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(155, 142, 200, 0.5);
+}
+
+/* ========== Scoped fixes for Students page (preserved) ========== */
+
 .students-filter [role="listbox"],
 .students-filter ul[role="listbox"],
 .students-filter ul {
@@ -20,7 +159,7 @@
 .students-filter [role="listbox"] {
   z-index: 9999 !important;
   background: #ffffff !important;
-  border: 1px solid #e5e7eb !important; /* gray-200 */
-  border-radius: 0.5rem !important; /* rounded-md */
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
   box-shadow: 0 10px 25px rgba(0,0,0,0.10) !important;
 }

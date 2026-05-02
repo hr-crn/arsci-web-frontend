@@ -25,7 +25,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
     localStorage.setItem('studentsDropdownOpen', studentsDropdownOpen.toString());
   }, [studentsDropdownOpen]);
   const sidenavTypes = {
-    dark: "bg-gradient-to-br from-blue-600 to-blue-800",
+    dark: "bg-gradient-to-b from-arsci-navy via-arsci-navy-mid to-arsci-navy-dark",
     white: "bg-white shadow-sm",
     transparent: "bg-transparent",
   };
@@ -34,24 +34,19 @@ export function Sidenav({ brandImg, brandName, routes }) {
     <aside
       className={`${sidenavTypes[sidenavType]} ${
         openSidenav ? "translate-x-0" : "-translate-x-80"
-      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
+      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-2xl transition-transform duration-300 xl:translate-x-0 border border-arsci-purple/20 shadow-xl`}
     >
       <div
         className={`relative`}
       >
-        <Link to="/dashboard/home" className="py-6 px-8 text-center">
-          <Typography
-            variant="h6"
-            color={sidenavType === "dark" ? "white" : "blue-gray"}
-          >
-             <Avatar
-                src="/img/01.png"
-                alt="arsci-logo"
-                size="xxl"
-                variant="square"
-                className="object-fill w-28 h-28"
-              />
-          </Typography>
+        <Link to="/dashboard/home" className="py-5 px-8 text-center block">
+          <img
+            src="/img/square.png"
+            alt="ARSCI Logo"
+            className="mx-auto w-20 h-20 object-contain drop-shadow-lg"
+            style={{ filter: 'drop-shadow(0 0 12px rgba(155, 142, 200, 0.3))' }}
+          />
+          <p className="mt-2 text-xs font-semibold tracking-widest uppercase" style={{ color: 'rgba(155, 142, 200, 0.7)' }}>Teacher Portal</p>
         </Link>
 
         <IconButton
@@ -209,7 +204,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
 }
 
 Sidenav.defaultProps = {
-  brandImg: "/img/1000060165.png",
+  brandImg: "/img/square.png",
   brandName: "ARSCI",
 };
 
