@@ -515,60 +515,57 @@ export function Students() {
               <label htmlFor="auto-gen-toggle" className="text-sm text-gray-700 select-none">Auto-generate username & password</label>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="relative">
-                <input
-                  className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
-                  value={studentForm.firstName}
-                  onChange={(e) => {
-                    const newFirstName = e.target.value;
-                    setStudentForm((prev) => {
-                      const prevDerivedUser = deriveUsername(prev.firstName, prev.middleName, prev.lastName);
-                      const shouldUpdateUsername = autoGenEnabled && autoUser && (!prev.username || prev.username === prevDerivedUser);
-                      const baseUser = deriveUsername(newFirstName, prev.middleName, prev.lastName);
-                      const nextUsername = shouldUpdateUsername ? uniqueUsername(baseUser) : prev.username;
-                      const prevDerivedPass = derivePassword(prev.section, prev.firstName, prev.middleName, prev.lastName);
-                      const shouldUpdatePassword = autoGenEnabled && autoPass && (!prev.password || prev.password === prevDerivedPass);
-                      const nextPassword = shouldUpdatePassword ? derivePassword(prev.section, newFirstName, prev.middleName, prev.lastName) : prev.password;
-                      return { ...prev, firstName: newFirstName, username: nextUsername, password: nextPassword };
-                    });
-                  }}
-                  disabled={loading || !studentForm.section}
-                  aria-required="true"
-                />
-                {(!studentForm.firstName || studentForm.firstName.length === 0) && (
-                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
-                    <span>First Name</span><span className="text-red-500">*</span>
-                  </span>
-                )}
-              </div>
-              <div className="relative">
-                <input
-                  className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
-                  value={studentForm.middleName}
-                  onChange={(e) => {
-                    const newMiddleName = e.target.value;
-                    setStudentForm((prev) => {
-                      const prevDerivedUser = deriveUsername(prev.firstName, prev.middleName, prev.lastName);
-                      const shouldUpdateUsername = autoGenEnabled && autoUser && (!prev.username || prev.username === prevDerivedUser);
-                      const baseUser = deriveUsername(prev.firstName, newMiddleName, prev.lastName);
-                      const nextUsername = shouldUpdateUsername ? uniqueUsername(baseUser) : prev.username;
-                      const prevDerivedPass = derivePassword(prev.section, prev.firstName, prev.middleName, prev.lastName);
-                      const shouldUpdatePassword = autoGenEnabled && autoPass && (!prev.password || prev.password === prevDerivedPass);
-                      const nextPassword = shouldUpdatePassword ? derivePassword(prev.section, prev.firstName, newMiddleName, prev.lastName) : prev.password;
-                      return { ...prev, middleName: newMiddleName, username: nextUsername, password: nextPassword };
-                    });
-                  }}
-                  disabled={loading || !studentForm.section}
-                />
-                {(!studentForm.middleName || studentForm.middleName.length === 0) && (
-                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
-                    <span>Middle Name</span><span className="text-gray-400"> (Optional)</span>
-                  </span>
-                )}
-              </div>
+            <div className="relative">
+              <input
+                className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
+                value={studentForm.firstName}
+                onChange={(e) => {
+                  const newFirstName = e.target.value;
+                  setStudentForm((prev) => {
+                    const prevDerivedUser = deriveUsername(prev.firstName, prev.middleName, prev.lastName);
+                    const shouldUpdateUsername = autoGenEnabled && autoUser && (!prev.username || prev.username === prevDerivedUser);
+                    const baseUser = deriveUsername(newFirstName, prev.middleName, prev.lastName);
+                    const nextUsername = shouldUpdateUsername ? uniqueUsername(baseUser) : prev.username;
+                    const prevDerivedPass = derivePassword(prev.section, prev.firstName, prev.middleName, prev.lastName);
+                    const shouldUpdatePassword = autoGenEnabled && autoPass && (!prev.password || prev.password === prevDerivedPass);
+                    const nextPassword = shouldUpdatePassword ? derivePassword(prev.section, newFirstName, prev.middleName, prev.lastName) : prev.password;
+                    return { ...prev, firstName: newFirstName, username: nextUsername, password: nextPassword };
+                  });
+                }}
+                disabled={loading || !studentForm.section}
+                aria-required="true"
+              />
+              {(!studentForm.firstName || studentForm.firstName.length === 0) && (
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
+                  <span>First Name</span><span className="text-red-500">*</span>
+                </span>
+              )}
             </div>
-            
+            <div className="relative">
+              <input
+                className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
+                value={studentForm.middleName}
+                onChange={(e) => {
+                  const newMiddleName = e.target.value;
+                  setStudentForm((prev) => {
+                    const prevDerivedUser = deriveUsername(prev.firstName, prev.middleName, prev.lastName);
+                    const shouldUpdateUsername = autoGenEnabled && autoUser && (!prev.username || prev.username === prevDerivedUser);
+                    const baseUser = deriveUsername(prev.firstName, newMiddleName, prev.lastName);
+                    const nextUsername = shouldUpdateUsername ? uniqueUsername(baseUser) : prev.username;
+                    const prevDerivedPass = derivePassword(prev.section, prev.firstName, prev.middleName, prev.lastName);
+                    const shouldUpdatePassword = autoGenEnabled && autoPass && (!prev.password || prev.password === prevDerivedPass);
+                    const nextPassword = shouldUpdatePassword ? derivePassword(prev.section, prev.firstName, newMiddleName, prev.lastName) : prev.password;
+                    return { ...prev, middleName: newMiddleName, username: nextUsername, password: nextPassword };
+                  });
+                }}
+                disabled={loading || !studentForm.section}
+              />
+              {(!studentForm.middleName || studentForm.middleName.length === 0) && (
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
+                  <span>Middle Name</span><span className="text-gray-400"> (Optional)</span>
+                </span>
+              )}
+            </div>
             <div className="relative">
               <input
                 className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
@@ -595,7 +592,6 @@ export function Students() {
                 </span>
               )}
             </div>
-
             {/* Section selector (reusable) */}
             <SectionSelect
               label="Section *"
@@ -620,51 +616,47 @@ export function Students() {
                 Please select a section before entering student details.
               </Typography>
             )}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 pt-4 border-t border-purple-100/50">
-              <div className="relative">
-                <input
-                  className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
-                  value={studentForm.username}
-                  onChange={(e) => {
-                    const newUsername = e.target.value.toLowerCase();
-                    setStudentForm((prev) => {
-                      const sanitized = newUsername.replace(/[^a-z0-9]/g, "");
-                      const unique = autoGenEnabled ? uniqueUsername(sanitized, prev.username) : sanitized;
-                      const prevDerivedPass = derivePassword(prev.section, prev.firstName, prev.middleName, prev.lastName);
-                      const shouldUpdatePassword = autoGenEnabled && autoPass && (!prev.password || prev.password === prevDerivedPass);
-                      const nextPassword = shouldUpdatePassword ? derivePassword(prev.section, prev.firstName, prev.middleName, prev.lastName) : prev.password;
-                      return { ...prev, username: unique, password: nextPassword };
-                    });
-                  }}
-                  disabled={loading}
-                  aria-required="true"
-                />
-                {(!studentForm.username || studentForm.username.length === 0) && (
-                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
-                    <span>Username</span><span className="text-red-500">*</span>
-                  </span>
-                )}
-              </div>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
-                  value={studentForm.password}
-                  onChange={(e) => setStudentForm((prev) => ({ ...prev, password: e.target.value }))}
-                  disabled={loading || !studentForm.section}
-                  aria-required={panelMode !== "edit"}
-                  placeholder={panelMode === "edit" ? "" : ""}
-                />
-                {(!studentForm.password || studentForm.password.length === 0) && (
-                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
-                    <span>{panelMode === "edit" ? "Password (leave blank to keep)" : "Password"}</span>
-                    {panelMode !== "edit" && <span className="text-red-500">*</span>}
-                  </span>
-                )}
-              </div>
+            <div className="relative">
+              <input
+                className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
+                value={studentForm.username}
+                onChange={(e) => {
+                  const newUsername = e.target.value.toLowerCase();
+                  setStudentForm((prev) => {
+                    const sanitized = newUsername.replace(/[^a-z0-9]/g, "");
+                    const unique = autoGenEnabled ? uniqueUsername(sanitized, prev.username) : sanitized;
+                    const prevDerivedPass = derivePassword(prev.section, prev.firstName, prev.middleName, prev.lastName);
+                    const shouldUpdatePassword = autoGenEnabled && autoPass && (!prev.password || prev.password === prevDerivedPass);
+                    const nextPassword = shouldUpdatePassword ? derivePassword(prev.section, prev.firstName, prev.middleName, prev.lastName) : prev.password;
+                    return { ...prev, username: unique, password: nextPassword };
+                  });
+                }}
+                disabled={loading}
+                aria-required="true"
+              />
+              {(!studentForm.username || studentForm.username.length === 0) && (
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
+                  <span>Username</span><span className="text-red-500">*</span>
+                </span>
+              )}
             </div>
-            
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
+                value={studentForm.password}
+                onChange={(e) => setStudentForm((prev) => ({ ...prev, password: e.target.value }))}
+                disabled={loading || !studentForm.section}
+                aria-required={panelMode !== "edit"}
+                placeholder={panelMode === "edit" ? "" : ""}
+              />
+              {(!studentForm.password || studentForm.password.length === 0) && (
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
+                  <span>{panelMode === "edit" ? "Password (leave blank to keep)" : "Password"}</span>
+                  {panelMode !== "edit" && <span className="text-red-500">*</span>}
+                </span>
+              )}
+            </div>
             <div className="-mt-2 flex items-center gap-3">
               <button type="button" className="flex items-center gap-1 text-xs text-gray-700 hover:text-blue-600" onClick={() => setShowPassword((v) => !v)}>
                 {showPassword ? <EyeSlashIcon className="w-4 h-4" /> : <EyeIcon className="w-4 h-4" />} {showPassword ? "Hide" : "View"} password
@@ -916,62 +908,59 @@ export function Students() {
                     />
                     <label htmlFor="auto-gen-toggle-batch" className="text-sm text-gray-700 select-none">Auto-generate username & password</label>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="relative">
-                      <input
-                        ref={batchFirstNameRef}
-                        className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
-                        value={batchFirstName}
-                        onChange={(e) => {
-                          const newFirstName = e.target.value;
-                          const prevDerivedUser = deriveUsername(batchFirstName, batchMiddleName, batchLastName);
-                          const shouldUpdateUser = autoGenEnabled && (!batchUsername || batchUsername === prevDerivedUser);
-                          const nextUsername = shouldUpdateUser ? uniqueUsername(deriveUsername(newFirstName, batchMiddleName, batchLastName)) : batchUsername;
-                          const prevDerivedPass = derivePassword(batchSection, batchFirstName, batchMiddleName, batchLastName);
-                          const shouldUpdatePass = autoGenEnabled && (!batchPassword || batchPassword === prevDerivedPass);
-                          const nextPassword = shouldUpdatePass ? derivePassword(batchSection, newFirstName, batchMiddleName, batchLastName) : batchPassword;
-                          setBatchFirstName(newFirstName);
-                          setBatchUsername(nextUsername);
-                          setBatchPassword(nextPassword);
-                        }}
-                        onKeyDown={(e) => handleBatchKeyDown(e, 'firstName')}
-                        disabled={loading || !batchSection}
-                        aria-required="true"
-                      />
-                      {(!batchFirstName || batchFirstName.length === 0) && (
-                        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
-                          <span>First Name</span><span className="text-red-500">*</span>
-                        </span>
-                      )}
-                    </div>
-                    <div className="relative">
-                      <input
-                        ref={batchMiddleNameRef}
-                        className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
-                        value={batchMiddleName}
-                        onChange={(e) => {
-                          const newMiddleName = e.target.value;
-                          const prevDerivedUser = deriveUsername(batchFirstName, batchMiddleName, batchLastName);
-                          const shouldUpdateUser = autoGenEnabled && (!batchUsername || batchUsername === prevDerivedUser);
-                          const nextUsername = shouldUpdateUser ? uniqueUsername(deriveUsername(batchFirstName, newMiddleName, batchLastName)) : batchUsername;
-                          const prevDerivedPass = derivePassword(batchSection, batchFirstName, batchMiddleName, batchLastName);
-                          const shouldUpdatePass = autoGenEnabled && (!batchPassword || batchPassword === prevDerivedPass);
-                          const nextPassword = shouldUpdatePass ? derivePassword(batchSection, batchFirstName, newMiddleName, batchLastName) : batchPassword;
-                          setBatchMiddleName(newMiddleName);
-                          setBatchUsername(nextUsername);
-                          setBatchPassword(nextPassword);
-                        }}
-                        onKeyDown={(e) => handleBatchKeyDown(e, 'middleName')}
-                        disabled={loading || !batchSection}
-                      />
-                      {(!batchMiddleName || batchMiddleName.length === 0) && (
-                        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
-                          <span>Middle Name</span><span className="text-gray-400"> (Optional)</span>
-                        </span>
-                      )}
-                    </div>
+                  <div className="relative">
+                    <input
+                      ref={batchFirstNameRef}
+                      className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
+                      value={batchFirstName}
+                      onChange={(e) => {
+                        const newFirstName = e.target.value;
+                        const prevDerivedUser = deriveUsername(batchFirstName, batchMiddleName, batchLastName);
+                        const shouldUpdateUser = autoGenEnabled && (!batchUsername || batchUsername === prevDerivedUser);
+                        const nextUsername = shouldUpdateUser ? uniqueUsername(deriveUsername(newFirstName, batchMiddleName, batchLastName)) : batchUsername;
+                        const prevDerivedPass = derivePassword(batchSection, batchFirstName, batchMiddleName, batchLastName);
+                        const shouldUpdatePass = autoGenEnabled && (!batchPassword || batchPassword === prevDerivedPass);
+                        const nextPassword = shouldUpdatePass ? derivePassword(batchSection, newFirstName, batchMiddleName, batchLastName) : batchPassword;
+                        setBatchFirstName(newFirstName);
+                        setBatchUsername(nextUsername);
+                        setBatchPassword(nextPassword);
+                      }}
+                      onKeyDown={(e) => handleBatchKeyDown(e, 'firstName')}
+                      disabled={loading || !batchSection}
+                      aria-required="true"
+                    />
+                    {(!batchFirstName || batchFirstName.length === 0) && (
+                      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
+                        <span>First Name</span><span className="text-red-500">*</span>
+                      </span>
+                    )}
                   </div>
-                  
+                  <div className="relative">
+                    <input
+                      ref={batchMiddleNameRef}
+                      className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
+                      value={batchMiddleName}
+                      onChange={(e) => {
+                        const newMiddleName = e.target.value;
+                        const prevDerivedUser = deriveUsername(batchFirstName, batchMiddleName, batchLastName);
+                        const shouldUpdateUser = autoGenEnabled && (!batchUsername || batchUsername === prevDerivedUser);
+                        const nextUsername = shouldUpdateUser ? uniqueUsername(deriveUsername(batchFirstName, newMiddleName, batchLastName)) : batchUsername;
+                        const prevDerivedPass = derivePassword(batchSection, batchFirstName, batchMiddleName, batchLastName);
+                        const shouldUpdatePass = autoGenEnabled && (!batchPassword || batchPassword === prevDerivedPass);
+                        const nextPassword = shouldUpdatePass ? derivePassword(batchSection, batchFirstName, newMiddleName, batchLastName) : batchPassword;
+                        setBatchMiddleName(newMiddleName);
+                        setBatchUsername(nextUsername);
+                        setBatchPassword(nextPassword);
+                      }}
+                      onKeyDown={(e) => handleBatchKeyDown(e, 'middleName')}
+                      disabled={loading || !batchSection}
+                    />
+                    {(!batchMiddleName || batchMiddleName.length === 0) && (
+                      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
+                        <span>Middle Name</span><span className="text-gray-400"> (Optional)</span>
+                      </span>
+                    )}
+                  </div>
                   <div className="relative">
                     <input
                       ref={batchLastNameRef}
@@ -999,103 +988,95 @@ export function Students() {
                       </span>
                     )}
                   </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 pt-4 border-t border-purple-100/50">
-                    <div>
-                      <div className="relative">
-                        <input
-                          ref={batchUsernameRef}
-                          className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
-                          value={batchUsername}
-                          onChange={(e) => {
-                            const raw = e.target.value.toLowerCase();
-                            const sanitized = raw.replace(/[^a-z0-9]/g, "");
-                            const unique = autoGenEnabled ? uniqueUsername(sanitized, batchUsername) : sanitized;
-                            const prevDerivedPass = derivePassword(batchSection, batchFirstName, batchMiddleName, batchLastName);
-                            const shouldUpdatePass = autoGenEnabled && (!batchPassword || batchPassword === prevDerivedPass);
-                            const nextPassword = shouldUpdatePass ? derivePassword(batchSection, batchFirstName, batchMiddleName, batchLastName) : batchPassword;
-                            setBatchUsername(unique);
-                            setBatchPassword(nextPassword);
-                          }}
-                          onKeyDown={(e) => handleBatchKeyDown(e, 'username')}
-                          disabled={loading}
-                          aria-required="true"
-                        />
-                        {(!batchUsername || batchUsername.length === 0) && (
-                          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
-                            <span>Username</span><span className="text-red-500">*</span>
-                          </span>
-                        )}
-                      </div>
-                      {/* Batch username suggestion */}
-                      {(() => {
-                        const suggestedUser = uniqueUsername(deriveUsername(batchFirstName, batchMiddleName, batchLastName));
-                        const show = suggestedUser && suggestedUser !== batchUsername;
-                        return show ? (
-                          <div className="mt-1 text-xs text-gray-600">
-                            Suggested: <span className="font-mono">{suggestedUser}</span>
-                            {" "}
-                            <button
-                              type="button"
-                              className="ml-2 text-blue-600 hover:underline"
-                              onClick={() => setBatchUsername(suggestedUser)}
-                            >
-                              Use
-                            </button>
-                          </div>
-                        ) : null;
-                      })()}
-                    </div>
-                    
-                    <div>
-                      <div className="relative">
-                        <input
-                          ref={batchPasswordRef}
-                          type={batchShowPassword ? "text" : "password"}
-                          className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
-                          value={batchPassword}
-                          onChange={(e) => setBatchPassword(e.target.value)}
-                          onKeyDown={(e) => handleBatchKeyDown(e, 'password')}
-                          disabled={loading || !batchSection}
-                          aria-required="true"
-                        />
-                        {(!batchPassword || batchPassword.length === 0) && (
-                          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
-                            <span>Password</span><span className="text-red-500">*</span>
-                          </span>
-                        )}
-                      </div>
-                      <div className="mt-1 flex items-center justify-between">
-                        <button type="button" className="flex items-center gap-1 text-xs text-gray-700 hover:text-blue-600" onClick={() => setBatchShowPassword((v) => !v)}>
-                          {batchShowPassword ? <EyeSlashIcon className="w-4 h-4" /> : <EyeIcon className="w-4 h-4" />} {batchShowPassword ? "Hide" : "View"}
-                        </button>
-                        {/* Batch password suggestion */}
-                        {(() => {
-                          const suggestedUser = batchUsername || uniqueUsername(deriveUsername(batchFirstName, batchMiddleName, batchLastName));
-                          const suggestedPass = derivePassword(batchSection, batchFirstName, batchMiddleName, batchLastName);
-                          const show = !!suggestedPass && suggestedPass !== batchPassword;
-                          return show ? (
-                            <div className="text-xs text-gray-600 text-right">
-                              Auto: <span className="font-mono">{suggestedPass}</span>
-                              {" "}
-                              <button
-                                type="button"
-                                className="ml-1 text-blue-600 hover:underline"
-                                onClick={() => setBatchPassword(suggestedPass)}
-                              >
-                                Use
-                              </button>
-                            </div>
-                          ) : null;
-                        })()}
-                      </div>
-                      {batchPasswordTooShort && (
-                        <Typography variant="small" className="text-red-500 mt-1">
-                          Password must be at least 8 characters.
-                        </Typography>
-                      )}
-                    </div>
+                  <div className="relative">
+                    <input
+                      ref={batchUsernameRef}
+                      className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
+                      value={batchUsername}
+                      onChange={(e) => {
+                        const raw = e.target.value.toLowerCase();
+                        const sanitized = raw.replace(/[^a-z0-9]/g, "");
+                        const unique = autoGenEnabled ? uniqueUsername(sanitized, batchUsername) : sanitized;
+                        const prevDerivedPass = derivePassword(batchSection, batchFirstName, batchMiddleName, batchLastName);
+                        const shouldUpdatePass = autoGenEnabled && (!batchPassword || batchPassword === prevDerivedPass);
+                        const nextPassword = shouldUpdatePass ? derivePassword(batchSection, batchFirstName, batchMiddleName, batchLastName) : batchPassword;
+                        setBatchUsername(unique);
+                        setBatchPassword(nextPassword);
+                      }}
+                      onKeyDown={(e) => handleBatchKeyDown(e, 'username')}
+                      disabled={loading}
+                      aria-required="true"
+                    />
+                    {(!batchUsername || batchUsername.length === 0) && (
+                      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
+                        <span>Username</span><span className="text-red-500">*</span>
+                      </span>
+                    )}
                   </div>
+                  {/* Batch username suggestion */}
+                  {(() => {
+                    const suggestedUser = uniqueUsername(deriveUsername(batchFirstName, batchMiddleName, batchLastName));
+                    const show = suggestedUser && suggestedUser !== batchUsername;
+                    return show ? (
+                      <div className="-mt-2 text-xs text-gray-600">
+                        Suggested username: <span className="font-mono">{suggestedUser}</span>
+                        {" "}
+                        <button
+                          type="button"
+                          className="ml-2 text-blue-600 hover:underline"
+                          onClick={() => setBatchUsername(suggestedUser)}
+                        >
+                          Use
+                        </button>
+                      </div>
+                    ) : null;
+                  })()}
+                  <div className="relative">
+                    <input
+                      ref={batchPasswordRef}
+                      type={batchShowPassword ? "text" : "password"}
+                      className="w-full rounded-lg border bg-white py-2.5 pl-3 pr-3 text-sm text-blue-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-gray-200 hover:border-blue-400 focus:border-blue-500"
+                      value={batchPassword}
+                      onChange={(e) => setBatchPassword(e.target.value)}
+                      onKeyDown={(e) => handleBatchKeyDown(e, 'password')}
+                      disabled={loading || !batchSection}
+                      aria-required="true"
+                    />
+                    {(!batchPassword || batchPassword.length === 0) && (
+                      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-blue-gray-500">
+                        <span>Password</span><span className="text-red-500">*</span>
+                      </span>
+                    )}
+                  </div>
+                  <div className="-mt-2">
+                    <button type="button" className="flex items-center gap-1 text-xs text-gray-700 hover:text-blue-600" onClick={() => setBatchShowPassword((v) => !v)}>
+                      {batchShowPassword ? <EyeSlashIcon className="w-4 h-4" /> : <EyeIcon className="w-4 h-4" />} {batchShowPassword ? "Hide" : "View"} password
+                    </button>
+                  </div>
+                  {/* Batch password suggestion */}
+                  {(() => {
+                    const suggestedUser = batchUsername || uniqueUsername(deriveUsername(batchFirstName, batchMiddleName, batchLastName));
+                    const suggestedPass = derivePassword(batchSection, batchFirstName, batchMiddleName, batchLastName);
+                    const show = !!suggestedPass && suggestedPass !== batchPassword;
+                    return show ? (
+                      <div className="-mt-2 text-xs text-gray-600">
+                        Auto suggestion: <span className="font-mono">{suggestedPass}</span>
+                        {" "}
+                        <button
+                          type="button"
+                          className="ml-2 text-blue-600 hover:underline"
+                          onClick={() => setBatchPassword(suggestedPass)}
+                        >
+                          Use
+                        </button>
+                      </div>
+                    ) : null;
+                  })()}
+                  {batchPasswordTooShort && (
+                    <Typography variant="small" className="text-red-500 -mt-2">
+                      Password must be at least 8 characters.
+                    </Typography>
+                  )}
                   <Button 
                     className="w-full arsci-btn-gradient rounded-xl shadow-md hover:shadow-lg" 
                     onClick={handleAddToStaged} 
